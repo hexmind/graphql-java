@@ -1,0 +1,9 @@
+{
+  film(where:{
+      title: {_like: "$pattern"},
+  }){
+    film_id
+    title
+    release_year
+  }
+}

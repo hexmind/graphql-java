@@ -4,6 +4,20 @@ type Place {
   type: String
   latitude: Float
   longitude: Float
+  forecast: Forecast
+  films: [String]
+}
+
+type Forecast {
+    title: String
+    consolidatedWeather: [Weather]
+}
+
+type Weather {
+    applicableDate: String
+    theTemp: Float
+    weatherStateName: String
+    weatherStateIcon: String
 }
 
 type Query {

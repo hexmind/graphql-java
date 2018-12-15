@@ -9,7 +9,7 @@ import java.util.List;
 @NoArgsConstructor
 public class Forecast {
 
-    String title;
+    private String title;
     private List<Weather> consolidatedWeather;
 
 }

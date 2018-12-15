@@ -1,3 +1,5 @@
 server.port: 8081
-logging.level.pl.hexmind: DEBUG
-logging.level.pl.hexmind.weather.client.MetaWeatherClient: DEBUG
+metaweather.url: https://www.metaweather.com/
+
+logging.level:
+  pl.hexmind: DEBUG
