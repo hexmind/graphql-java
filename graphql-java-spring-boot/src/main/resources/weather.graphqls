@@ -1,0 +1,11 @@
+type Place {
+  id: ID!
+  title: String!
+  type: String
+  latitude: Float
+  longitude: Float
+}
+
+type Query {
+  searchPlace(query: String!): [Place]
+}
