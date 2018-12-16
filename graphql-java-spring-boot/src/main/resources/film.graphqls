@@ -1,0 +1,5 @@
+type Film {
+  filmId: ID!
+  title: String!
+  releaseYear: Int
+}

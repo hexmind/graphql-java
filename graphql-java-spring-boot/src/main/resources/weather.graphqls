@@ -5,7 +5,7 @@ type Place {
   latitude: Float
   longitude: Float
   forecast: Forecast
-  films: [String]
+  films: [Film]
 }
 
 type Forecast {

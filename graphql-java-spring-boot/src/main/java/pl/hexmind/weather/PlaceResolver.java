@@ -18,33 +18,34 @@ import org.springframework.util.StreamUtils;
 
 import com.coxautodev.graphql.tools.GraphQLResolver;
 import com.google.common.base.Charsets;
+import com.google.common.base.Splitter;
 
 @Component
 public class PlaceResolver implements GraphQLResolver<Place> {
 
-    private final MetaWeatherClient metaWeatherClient;
+    private final MetaWeatherClient metaMetaWeatherClient;
     private final FilmsClient filmsClient;
     private String searchFilmsQuery;
 
-    public PlaceResolver(MetaWeatherClient metaWeatherClient,
+    public PlaceResolver(MetaWeatherClient metaMetaWeatherClient,
                          FilmsClient filmsClient,
                          @Value("classpath:queries/searchFilms.graphqls") Resource searchFilmsQuery
     ) throws IOException {
-        this.metaWeatherClient = metaWeatherClient;
+        this.metaMetaWeatherClient = metaMetaWeatherClient;
         this.filmsClient = filmsClient;
         this.searchFilmsQuery = StreamUtils.copyToString(searchFilmsQuery.getInputStream(), Charsets.UTF_8);
     }
 
     @Cacheable("getForecast")
     public Forecast getForecast(Place place) {
-        return metaWeatherClient.getForecast(place.getId());
+        return metaMetaWeatherClient.getForecast(place.getId());
     }
 
     public List<Film> getFilms(Place place, DataFetchingEnvironment environment) {
-        String query = searchFilmsQuery.replace(
-                "$pattern",
-                place.getTitle().charAt(0) + "%"
-        );
+        String pattern = Splitter.fixedLength(3).split(place.getTitle())
+                .iterator().next()
+                .toUpperCase() + "%";
+        String query = searchFilmsQuery.replace("$pattern", pattern);
         return filmsClient
                 .searchFilms(new GraphqlRequest(query))
                 .getData()

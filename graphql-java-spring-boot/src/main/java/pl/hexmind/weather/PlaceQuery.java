@@ -12,28 +12,26 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Component;
 
 import com.coxautodev.graphql.tools.GraphQLQueryResolver;
+import com.google.common.base.Strings;
 
 @Component
 public class PlaceQuery implements GraphQLQueryResolver {
 
-    private final MetaWeatherClient metaWeatherClient;
+    private final MetaWeatherClient metaMetaWeatherClient;
 
-    public PlaceQuery(MetaWeatherClient metaWeatherClient) {
-        this.metaWeatherClient = metaWeatherClient;
+    public PlaceQuery(MetaWeatherClient metaMetaWeatherClient) {
+        this.metaMetaWeatherClient = metaMetaWeatherClient;
     }
 
     @Cacheable("searchPlace")
     public List<Place> searchPlace(String query) {
-        return metaWeatherClient.searchLocation(query).stream()
-                .filter(l -> l.getLattLong() != null && l.getLattLong().contains(","))
+        return metaMetaWeatherClient.searchLocation(query).stream()
                 .map(this::toPlace)
                 .collect(Collectors.toList());
     }
 
     private Place toPlace(Location location) {
-        List<BigDecimal> lattLong = Arrays.stream(location.getLattLong().split(","))
-                .map(BigDecimal::new)
-                .collect(Collectors.toList());
+        List<BigDecimal> lattLong = splitLattLong(location.getLattLong());
         return Place.builder()
                 .id(location.getWoeid())
                 .title(location.getTitle())
@@ -41,5 +39,16 @@ public class PlaceQuery implements GraphQLQueryResolver {
                 .latitude(lattLong.get(0))
                 .longitude(lattLong.get(1))
                 .build();
+    }
+
+    private List<BigDecimal> splitLattLong(String lattLong) {
+        if (!Strings.isNullOrEmpty(lattLong)
+                && lattLong.contains(",")) {
+            return Arrays.stream(lattLong.split(","))
+                    .map(BigDecimal::new)
+                    .collect(Collectors.toList());
+        } else {
+            return Arrays.asList(null, null);
+        }
     }
 }
