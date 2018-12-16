@@ -1,4 +1,4 @@
-package pl.hexmind.film.client;
+package pl.hexmind.common.graphql;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

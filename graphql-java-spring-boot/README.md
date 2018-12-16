@@ -1,5 +1,44 @@
-# graphql-java-spring-boot
+# graphql-java-weather 
 
-A detailed step-by-step tutorial on how to implement a Hello World GraphQL API using Java, Spring Boot, and Maven.
+## Sun, clouds and movies
 
-[https://www.codenotfound.com/graphql-java-spring-boot-example.html](https://www.codenotfound.com/graphql-java-spring-boot-example.html)
+```
++-graphql-java-weather---------+ HTTP
+|                              +----------------------------> metaweather.com/api
+| graphiql-spring-boot-starter |
+|                              | GQL              SQL
+| graphql-java-tools           +--------> Hasura +----------> Postgres
+|                              |               | |            films DB
+|                              | remote schema | |
+|                              +<- - - - - - - + |
++------------------------------+                 |
+                                                 |
+  WebSockets                                     |
+<------------------------------------------------+
+
+```                                              
+
+## GraphIQL
+
+Tool for writing, validating, and testing GraphQL queries:
+
+```http://localhost:8081/graphiql```
+
+Example query:
+```
+{
+  searchPlace(query:"NEW YORK") {
+    title
+    films {
+      title
+      releaseYear
+    }
+    forecast {
+      consolidatedWeather {
+        applicableDate
+        theTemp
+      }
+    }    
+  }
+}
+```

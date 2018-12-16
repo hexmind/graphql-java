@@ -1,5 +1,7 @@
 package pl.hexmind.film.client;
 
+import pl.hexmind.common.graphql.GraphqlRequest;
+
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PostMapping;
